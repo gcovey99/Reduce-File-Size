@@ -4,14 +4,16 @@ import tkinter as tk
 from tkinter import filedialog, simpledialog, messagebox
 
 def reduce_image_size(input_image_path, output_image_path, quality, text_widget):
-  
+   
     with Image.open(input_image_path) as img:
-    
+     
         if img.mode in ("RGBA", "P"):
             img = img.convert("RGB")
         
+      
         img.save(output_image_path, "JPEG", quality=quality)
         
+    
         input_size = os.path.getsize(input_image_path)
         output_size = os.path.getsize(output_image_path)
         
@@ -24,7 +26,8 @@ def reduce_image_size(input_image_path, output_image_path, quality, text_widget)
         
         log_message = (f"Original size: {input_size / 1024:.2f} KB\n"
                        f"Compressed size: {output_size / 1024:.2f} KB\n"
-                       f"Percentage reduction: {percentage_diff:.2f}%\n")
+                       f"Percentage reduction: {percentage_diff:.2f}%\n"
+                       "---------------------------------------------\n")
         
         text_widget.insert(tk.END, log_message)
         text_widget.see(tk.END)
@@ -39,7 +42,7 @@ def get_output_path(input_path):
     return os.path.join(directory, new_filename)
 
 def select_files(text_widget):
-  
+   
     quality = simpledialog.askinteger("Input Quality", "Enter the quality level (1-100):", minvalue=1, maxvalue=100)
     
     if quality is not None:
@@ -57,7 +60,7 @@ def select_files(text_widget):
                 text_widget.see(tk.END)
 
 def create_gui():
-  
+   
     root = tk.Tk()
     root.title("Image Compression Tool")
 
