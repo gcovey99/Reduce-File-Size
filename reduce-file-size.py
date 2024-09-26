@@ -19,7 +19,7 @@ def reduceImageSize(input_image_path, output_image_path, quality, width, text_wi
         input_size = os.path.getsize(input_image_path)
         output_size = os.path.getsize(output_image_path)
 
-        if output_size >= input_size:
+        if output_size >= input_size: 
             os.remove(output_image_path)
             messagebox.showinfo("Compression Result", "File cannot be compressed at this level.")
             return False
@@ -45,14 +45,11 @@ def getOutputPath(input_path):
     new_filename = f"{name}-s{ext}"
     return os.path.join(directory, new_filename)
 
-def select_files(quality_entry, width_entry, text_widget):
-    quality = quality_entry.get()
+def select_files(quality_scale, width_entry, text_widget):
+    quality = quality_scale.get()
     width = width_entry.get()
-    if not quality.isdigit() or int(quality) < 1 or int(quality) > 100:
-        messagebox.showinfo("Error", "Please enter a valid quality percentage between 1-100.")
-        return
 
-    width = int(width) if width.isdigit() else None  # Only convert to int if it's a digit
+    width = int(width) if width.isdigit() else None
 
     file_paths = filedialog.askopenfilenames(
         title="Select image files",
@@ -74,26 +71,28 @@ def windowGUI():
     instructions = tk.Label(root, text="Select images to compress:")
     instructions.pack()
 
-    #quality entry
+    # Quality slider with default value set to 100
     quality_label = tk.Label(root, text="Quality (1-100):")
     quality_label.pack()
 
-    quality_entry = tk.Entry(root)
-    quality_entry.pack()
+    quality_scale = tk.Scale(root, from_=1, to=100, orient="horizontal", length=400)
+    quality_scale.set(100)
+    quality_scale.pack()
 
-    #width entry
     width_label = tk.Label(root, text="Image Resize (Change the width of the image):")
     width_label.pack()
 
     width_entry = tk.Entry(root)
     width_entry.pack()
 
-    browse_button = tk.Button(root, text="Browse Images", command=lambda: select_files(quality_entry, width_entry, text_widget))
+    browse_button = tk.Button(root, text="Browse Images", command=lambda: select_files(quality_scale, width_entry, text_widget))
     browse_button.pack()
 
     text_widget = tk.Text(root, height=25, width=85)
-    text_widget.pack(padx=20, pady=20)  
+    text_widget.pack(padx=20, pady=20)
 
     root.mainloop()
 
 windowGUI()
+
+
